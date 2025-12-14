@@ -3,11 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Events\MessageSent;
 use App\Http\Controllers\ChatController;
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 use App\Http\Controllers\AuthController;
 
 
