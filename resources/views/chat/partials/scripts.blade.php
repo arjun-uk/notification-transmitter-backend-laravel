@@ -41,10 +41,6 @@
         window.Echo.channel('chat-room')
             .listen('.message.sent', (e) => {
                 console.log('Message Received:', e);
-                // Check if message is from me or others (simple check by name for now as we don't have auth IDs easily accessible without digging)
-                // Actually, let's just append it. If we used ID we could distinguish better.
-                // We will assume if sender_name == myName it's me? 
-                // But realtime comes back to me too.
                 appendMessage(e.message);
             });
 
@@ -52,9 +48,6 @@
         axios.get('/messages')
             .then(response => {
                 const messages = response.data;
-                // Reverse if the API returns newest first (Repository was oldest(), so likely fine)
-                // MessageRepository::oldest() returns oldest first (1, 2, 3).
-                // So we just append them.
                 messages.forEach(msg => appendMessage(msg));
                 scrollToBottom();
             })
@@ -75,15 +68,6 @@
             axios.post('/messages', payload)
                 .then(response => {
                     console.log('Message sent:', response.data);
-                    // We don't append here because the event will come back to us via Echo
-                    // However, for immediate feedback we COULD append, but we might get duplicates
-                    // if we don't handle IDs. 
-                    // Robust way: Append locally with a "sending" state?
-                    // For simplicity, let's rely on Echo or just append and dedupe.
-                    // Let's rely on Echo for "realtime" feel, or append and ignore the echo event if ID matches.
-                    // But we don't have the ID until response.
-
-                    // Let's just wait for Echo for now, it's fast enough on local Reverb.
                 })
                 .catch(error => {
                     console.error('Error sending message:', error);
