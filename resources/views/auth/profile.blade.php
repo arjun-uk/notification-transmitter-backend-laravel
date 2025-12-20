@@ -89,7 +89,7 @@
                 <p>{{ $user->email }}</p>
                 <p
                     style="margin-top: 8px; font-size: 0.875rem; background: #e0e7ff; color: #4338ca; padding: 4px 8px; border-radius: 4px; display: inline-block;">
-                    Authenticated via Passport
+                    Authenticated via JWT
                 </p>
             </div>
         </div>

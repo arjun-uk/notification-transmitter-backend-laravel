@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = $user->createToken('AuthToken')->accessToken;
+            $token = Auth::guard('api')->login($user);
 
             // Store token in session if we want to use it in Blade easily without re-fetching
             // But usually we just pass it to the view.
@@ -56,7 +56,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        $token = $user->createToken('AuthToken')->accessToken;
+        $token = Auth::guard('api')->login($user);
         session(['api_token' => $token]);
 
         return redirect('/chat');
@@ -66,7 +66,7 @@ class AuthController extends Controller
     {
         // Revoke the token
         if (Auth::check()) {
-            Auth::user()->tokens()->delete(); // Or revoke specific one
+            Auth::guard('api')->logout();
         }
 
         Auth::logout();
